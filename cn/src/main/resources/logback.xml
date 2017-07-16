@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    　　　　　　　　　　
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        　　　　　　　　　　　　
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logFile.%d{yyyy-MM-dd }.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        　　　　　　　　　　　　
+        <encoder>
+            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+            　　　　　　　　　　　　
+        </encoder>
+    </appender>
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <Target>System.out</Target>
+        <encoder>
+            <pattern>%-5p [%d][%mdc{mdc_userId}] %C:%L - %m %n</pattern>
+            <charset>utf-8</charset>
+        </encoder>
+        <!-- 此日志appender是为开发使用，只配置最底级别，控制台输出的日志级别是大于或等于此级别的日志信息 -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+    </appender>
+
+    <logger name="com.hc.cn" level="DEBUG" />
+    　　　　　　　　　　
+    <root level="DEBUG">
+        <appender-ref ref="stdout" />　　　　　　　　　
+        <appender-ref ref="FILE"/>
+        　　　　　　　　　　
+    </root>
+    　　　　　　　　
+</configuration>
