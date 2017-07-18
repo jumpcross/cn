@@ -41,7 +41,7 @@ public class WebSecurityConfig extends WebMvcConfigurerAdapter {
     }
 
     private class SecurityInterceptor extends HandlerInterceptorAdapter {
-
+/**
         @Override
         public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
                 throws Exception {
@@ -53,6 +53,6 @@ public class WebSecurityConfig extends WebMvcConfigurerAdapter {
             String url = "/login";
             response.sendRedirect(url);
             return false;
-        }
+        }*/
     }
 }

@@ -22,11 +22,12 @@ public class CnApplication {
 		SpringApplication.run(CnApplication.class, args);
 
 	}
+	/**
 	@Bean
 	public ViewResolver viewResolver() {
 		ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
 		templateResolver.setTemplateMode("XHTML");
-		templateResolver.setPrefix("views/");
+		//templateResolver.setPrefix("views/");
 		templateResolver.setSuffix("*.html");
 
 		SpringTemplateEngine engine = new SpringTemplateEngine();
@@ -35,7 +36,7 @@ public class CnApplication {
 		ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
 		viewResolver.setTemplateEngine(engine);
 		return viewResolver;
-	}
+	}*/
 	@Bean
 	CommandLineRunner init(StorageService storageService) {
 		return (args) -> {
