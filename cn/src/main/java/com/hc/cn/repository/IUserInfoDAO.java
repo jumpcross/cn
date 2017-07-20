@@ -1,9 +1,10 @@
-package com.hc.cn.dao;
+package com.hc.cn.repository;
 import java.util.List;
 
 import com.hc.cn.entity.Article;
-import com.hc.cn.entity.UserInfo;
+import com.hc.cn.entity.User;
+
 public interface IUserInfoDAO {
-	UserInfo getActiveUser(String userName);
+	User getActiveUser(String userName);
 	List<Article> getAllUserArticles();
 }

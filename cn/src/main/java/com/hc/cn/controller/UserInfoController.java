@@ -2,22 +2,34 @@ package com.hc.cn.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.hc.cn.service.IUserInfoService;
+import com.hc.cn.service.IUserService;
 
 @Controller
-@RequestMapping("app")
 public class UserInfoController {
 	@Autowired
-	private IUserInfoService userInfoService;
+	private IUserService userInfoService;
 	@GetMapping("login")
 	public ModelAndView login() {
 		    ModelAndView mav = new ModelAndView();
 		    mav.setViewName("custom-login");
 		    return mav;
-    }	
+    }
+	@GetMapping("signup")
+	public ModelAndView signup() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("signup");
+		return mav;
+	}
+	@PostMapping("signup")
+	public ModelAndView signupPost() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("login");
+		return mav;
+	}
 	@GetMapping("secure/article-details")
 	public ModelAndView getAllUserArticles() {
 		    ModelAndView mav = new ModelAndView();
