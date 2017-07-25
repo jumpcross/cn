@@ -4,8 +4,7 @@ package com.hc.cn.controller;
  * Created by Charlie on 2017-07-12.
  */
 
-import com.hc.cn.PdfReader;
-import com.hc.cn.storage.StorageException;
+import com.hc.cn.tool.PdfReader;
 import com.hc.cn.storage.StorageFileNotFoundException;
 import com.hc.cn.storage.StorageProperties;
 import com.hc.cn.storage.StorageService;

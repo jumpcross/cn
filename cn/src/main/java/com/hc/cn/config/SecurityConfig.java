@@ -17,14 +17,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private MyAppUserDetailsService myAppUserDetailsService;
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/","/signup").
+		http.csrf().disable();
+		http.authorizeRequests().antMatchers("/","/signup","index","/alipay.trade.page.pay","upload").
 				permitAll()
-		.antMatchers("/secure/**").hasAnyRole("ADMIN","USER")
-		.and().formLogin()  //login configuration
+		.antMatchers("/sdfsdf").hasAnyRole("ADMIN","USER")
+
+				.and().formLogin()  //login configuration
         .loginPage("/login")
-        .loginProcessingUrl("/app-login")
-        .usernameParameter("app_username")
-        .passwordParameter("app_password")
+        .loginProcessingUrl("/login")
+        .usernameParameter("username")
+        .passwordParameter("password")
         .defaultSuccessUrl("/secure/article-details")
 		.and().logout()    //logout configuration
 		.logoutUrl("/app-logout") 
