@@ -15,6 +15,7 @@ import com.hc.cn.service.IUserService;
 import java.util.List;
 
 @Controller
+
 public class UserInfoController {
 	@Autowired
 	IUserService userService;
@@ -31,7 +32,7 @@ public class UserInfoController {
     @PostMapping("loginPost")
 	public ModelAndView loginPost() {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("index");
+		mav.setViewName("upload");
 		return mav;
 	}
 
@@ -56,6 +57,8 @@ public class UserInfoController {
 			String pass = passwordEncoder.encode(password);
 
 			user.setPassword(password);
+			user.setEnabled((short) 1);
+			user.setRole("USER");
 			userRepository.save(user);
 
 			mav.setViewName("login");

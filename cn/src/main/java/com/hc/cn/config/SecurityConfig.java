@@ -18,9 +18,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
-		http.authorizeRequests().antMatchers("/","/signup","index","/alipay.trade.page.pay","upload").
-				permitAll()
-		.antMatchers("/sdfsdf").hasAnyRole("ADMIN","USER")
+		http.authorizeRequests().antMatchers("/","/signup","login","upload").
+				permitAll().and().authorizeRequests()
+
+		.antMatchers("/123").authenticated()
 
 				.and().formLogin()  //login configuration
         .loginPage("/login")
@@ -37,6 +38,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
     	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        auth.userDetailsService(myAppUserDetailsService).passwordEncoder(passwordEncoder);
+        auth.userDetailsService(myAppUserDetailsService);//.passwordEncoder(passwordEncoder);
 	}
 }

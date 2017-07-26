@@ -8,6 +8,7 @@ import com.hc.cn.tool.PdfReader;
 import com.hc.cn.storage.StorageFileNotFoundException;
 import com.hc.cn.storage.StorageProperties;
 import com.hc.cn.storage.StorageService;
+import com.hc.cn.tool.PdfTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,12 +90,16 @@ public class FileUploadController {
 
         } else {
             storageService.store(file);
+            
             PdfReader pdfReader = new PdfReader();
             String content = pdfReader.getFileContent(absoluFilePath);
             String handleFileName = absoluFilePath.substring(0, absoluFilePath.length() - 4);
-            handleFileName = handleFileName + ".doc";
-            pdfReader.writeDocument(content, handleFileName);
+            handleFileName = handleFileName + ".docx";
+            
+           // pdfReader.writeDocument(content, handleFileName);
+            PdfTool.saveFile(file,handleFileName);
             String origenName = file.getOriginalFilename();
+            
             String origenName2 = origenName.substring(0, origenName.length() - 3);
             origenName2 = origenName2 + "doc";
             redirectAttributes.addFlashAttribute("message",
