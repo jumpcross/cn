@@ -1,62 +1,59 @@
 package com.hc.cn.entity;
 
-import java.io.Serializable;
+import javax.persistence.*;
+import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 @Entity
-@Table(name="users")
-public class User implements Serializable {
-	private static final long serialVersionUID = 1L;
-	@Id
-	@Column(name="username")
-	private String userName;
-	@Column(name="password")
+@Table(name = "user")
+public class User {
+	private Long id;
+	private String username;
 	private String password;
-	@Column(name="role")	
-	private String role;
-	@Column(name="full_name")	
-	private String fullName;
-	@Column(name="country")	
-	private String country;
-	@Column(name="enabled")	
-	private short enabled;
-	public String getUserName() {
-		return userName;
+	private String passwordConfirm;
+	private Set<Role> roles;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public Long getId() {
+		return id;
 	}
-	public void setUserName(String userName) {
-		this.userName = userName;
+
+	public void setId(Long id) {
+		this.id = id;
 	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 	public String getPassword() {
 		return password;
 	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getRole() {
-		return role;
+
+	@Transient
+	public String getPasswordConfirm() {
+		return passwordConfirm;
 	}
-	public void setRole(String role) {
-		this.role = role;
+
+	public void setPasswordConfirm(String passwordConfirm) {
+		this.passwordConfirm = passwordConfirm;
 	}
-	public String getFullName() {
-		return fullName;
+
+	@ManyToMany
+	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	public Set<Role> getRoles() {
+		return roles;
 	}
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
-	}
-	public String getCountry() {
-		return country;
-	}
-	public void setCountry(String country) {
-		this.country = country;
-	}
-	public short getEnabled() {
-		return enabled;
-	}
-	public void setEnabled(short enabled) {
-		this.enabled = enabled;
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
 	}
 }

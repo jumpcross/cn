@@ -1,5 +1,7 @@
 package com.hc.cn.controller;
+import com.hc.cn.entity.Role;
 import com.hc.cn.entity.User;
+import com.hc.cn.repository.RoleRepository;
 import com.hc.cn.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -12,11 +14,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.hc.cn.service.IUserService;
 
-import java.util.List;
+import java.util.*;
 
 @Controller
 
 public class UserInfoController {
+	@Autowired
+	RoleRepository roleRepository;
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	@Autowired
 	IUserService userService;
 	@Autowired
@@ -46,21 +52,16 @@ public class UserInfoController {
 	public ModelAndView signupPost(String username,String password) {
 		ModelAndView mav = new ModelAndView();
 		if (null != username && password!=null && !username.trim().equals("") && !password.trim().equals("")){
-			List<User> userlist = userRepository.findByUserName(username);
-			if (userlist.size()>0){
+			User user = userRepository.findByUsername(username);
+			if (user != null){
 				mav.setViewName("error");
 				return mav;
 			}
-			User user = new User();
-			user.setUserName(username);
-			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-			String pass = passwordEncoder.encode(password);
-
-			user.setPassword(password);
-			user.setEnabled((short) 1);
-			user.setRole("USER");
-			userRepository.save(user);
-
+			User usernew = new User();
+			usernew.setUsername(username);
+			usernew.setPassword(bCryptPasswordEncoder.encode(password));
+            usernew.setRoles(new HashSet<>(roleRepository.findAll()));
+			userRepository.save(usernew);
 			mav.setViewName("login");
 			return mav;
 		}

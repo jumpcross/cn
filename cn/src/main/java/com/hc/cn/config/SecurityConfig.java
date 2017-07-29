@@ -1,12 +1,13 @@
 package com.hc.cn.config;
-import com.hc.cn.service.MyAppUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
@@ -14,30 +15,30 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableGlobalMethodSecurity(securedEnabled=true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
-	private MyAppUserDetailsService myAppUserDetailsService;
+	private UserDetailsService userDetailsService;
+
+	@Bean
+	public BCryptPasswordEncoder bCryptPasswordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable();
-		http.authorizeRequests().antMatchers("/","/signup","login","upload").
-				permitAll().and().authorizeRequests()
-
-		.antMatchers("/123").authenticated()
-
-				.and().formLogin()  //login configuration
-        .loginPage("/login")
-        .loginProcessingUrl("/login")
-        .usernameParameter("username")
-        .passwordParameter("password")
-        .defaultSuccessUrl("/secure/article-details")
-		.and().logout()    //logout configuration
-		.logoutUrl("/app-logout") 
-		.logoutSuccessUrl("/login")
-		.and().exceptionHandling() //exception handling configuration
-		.accessDeniedPage("/error");
+		http
+				.authorizeRequests()
+				.antMatchers("/resources/**", "/signup").permitAll()
+				.anyRequest().authenticated()
+				.and()
+				.formLogin()
+				.loginPage("/login")
+				.permitAll()
+				.and()
+				.logout()
+				.permitAll();
 	} 
     @Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-    	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        auth.userDetailsService(myAppUserDetailsService);//.passwordEncoder(passwordEncoder);
+    	/*BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        auth.userDetailsService(myAppUserDetailsService);//.passwordEncoder(passwordEncoder);*/
+		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
 	}
 }
